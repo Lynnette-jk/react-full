@@ -1,13 +1,18 @@
 import { useState } from 'react'
 
 const History = ({ good, neutral, bad }) => {
-  if (good + neutral + bad === 0) {
+  const all = good + neutral + bad;
+
+  if (all === 0) {
     return (
       <div>
         <h2>Give feedback</h2>
       </div>
-    )
+    );
   }
+
+  const average = (good - bad) / all;
+  const positivePercentage = (good / all) * 100;
 
   return (
     <div>
@@ -15,9 +20,12 @@ const History = ({ good, neutral, bad }) => {
       <p>Good: {good}</p>
       <p>Neutral: {neutral}</p>
       <p>Bad: {bad}</p>
+      <p>All: {all}</p>
+      <p>Average score: {average.toFixed(1)}</p>
+      <p>Positive feedback: {positivePercentage.toFixed(1)}%</p>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
   const [good, setGood] = useState(0)
@@ -42,7 +50,7 @@ const App = () => {
       <button onClick={handleGoodClick}>Good</button>
       <button onClick={handleNeutralClick}>Neutral</button>
       <button onClick={handleBadClick}>Bad</button>
-      <History good={good} neutral={neutral} bad={bad} />
+      <History good={good} neutral={neutral} bad={bad}/>
     </div>
   )
 }
