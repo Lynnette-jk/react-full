@@ -6,9 +6,9 @@ const StatisticLine = ({ text, value }) => (
 )
 
 const Statistics = ({ good, neutral, bad }) => {
-  const total = good + neutral + bad
-  const average = (good - bad) / total
-  const positivePercentage = (good / total) * 100
+  const total = good + neutral + bad;
+  const average = (good - bad) / total || 0;
+  const positivePercentage = (good / total) * 100 || 0;
 
   if (total === 0) {
     return (
@@ -16,21 +16,30 @@ const Statistics = ({ good, neutral, bad }) => {
         <h2>Statistics</h2>
         <p>No feedback given</p>
       </div>
-    )
+    );
   }
 
   return (
     <div>
       <h2>Statistics</h2>
-      <StatisticLine text="Good" value={good} />
-      <StatisticLine text="Neutral" value={neutral} />
-      <StatisticLine text="Bad" value={bad} />
-      <StatisticLine text="All" value={total} />
-      <StatisticLine text="Average" value={average} />
-      <StatisticLine text="Positive" value={`${positivePercentage}%`} />
+      <table>
+        <tbody>
+          <StatisticLine text="Good" value={good} />
+          <StatisticLine text="Neutral" value={neutral} />
+          <StatisticLine text="Bad" value={bad} />
+          <StatisticLine text="All" value={total} />
+          <StatisticLine text="Average" value={average} />
+          <StatisticLine
+            text="Positive"
+            value={positivePercentage}
+            unit="%"
+          />
+        </tbody>
+      </table>
     </div>
-  )
+  );
 };
+
 
 const App = () => {
   const [good, setGood] = useState(0);
