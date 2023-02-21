@@ -8,7 +8,7 @@ const Statistics = ({ good, neutral, bad }) => {
   if (total === 0) {
     return (
       <div>
-        <h2>Give feedback</h2>
+        <h2>No feedback given</h2>
       </div>
     );
   }
@@ -45,7 +45,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Give Feedback</h1>
+      <h1>Give feedback</h1>
       <button onClick={handleGoodClick}>Good</button>
       <button onClick={handleNeutralClick}>Neutral</button>
       <button onClick={handleBadClick}>Bad</button>
