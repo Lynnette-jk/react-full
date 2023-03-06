@@ -3,17 +3,20 @@
     {
       "name": "Arto Hellas",
       "number": "040-123456",
-      "id": 1
+      "id": 1,
+      "phone": "45-69-326598"
     },
     {
       "name": "Dan Abramov",
       "number": "12-43-234345",
-      "id": 3
+      "id": 3,
+      "phone": "87-98-653214"
     },
     {
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
-      "id": 4
+      "id": 4,
+      "phone": "23-65-987414"
     },
     {
       "name": "Kane Kiboko",
@@ -28,16 +31,10 @@
       "id": 6
     },
     {
-      "name": "David Hulin",
-      "phone": "74-96-328547",
-      "important": true,
-      "id": 7
-    },
-    {
-      "name": "Kelly Rodgers",
-      "phone": "12-96-852147",
+      "name": "John Doe",
+      "phone": "10-12-36-958474",
       "important": false,
-      "id": 8
+      "id": 9
     }
   ]
 }

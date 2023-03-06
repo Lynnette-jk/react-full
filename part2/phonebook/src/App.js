@@ -39,12 +39,25 @@ const Persons = ({ persons, deletePerson }) => {
     </ul>
   )
 }
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='error'>
+      {message}
+    </div>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     personsService.getAll().then(initialPersons => {
@@ -85,6 +98,16 @@ const App = () => {
           )
           setNewName('')
           setNewPhone('')
+          setSuccessMessage(`Updated ${updatedPerson.name}'s phone number`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setErrorMessage(`Information of ${existingPerson.name} has already been removed from server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         })
     }
     return
@@ -100,6 +123,16 @@ const App = () => {
       setPersons(persons.concat(response))
       setNewName('')
       setNewPhone('')
+      setSuccessMessage(`Added ${response.name} to phonebook`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
+    })
+    .catch(error => {
+      setErrorMessage('Failed to add person')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     })
   }
 
@@ -118,6 +151,10 @@ const App = () => {
     if (window.confirm(`Delete ${name}?`)) {
       removePerson(id);
       setPersons(persons.filter(person => person.id !== id));
+      setSuccessMessage(`${name} deleted from phonebook`);
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
     }
   };
   
@@ -129,12 +166,15 @@ const App = () => {
 
   return (
     <div>
+      {successMessage && <div className="success">{successMessage}</div>}
+      {errorMessage && <div className="error">{errorMessage}</div>}
       <h2>Phonebook</h2>
       <Filter searchQuery={searchQuery} handleSearchQueryChange={handleSearchQueryChange} />
       <h2>Add a new</h2>
       <PersonForm newName={newName} newPhone={newPhone} handleNameChange={handleNameChange} handlePhoneChange={handlePhoneChange} addPerson={addPerson} />
       <h2>Numbers</h2>
       <Persons persons={filteredPersons} deletePerson={deletePerson} />
+      <Notification message={errorMessage} />
     </div>
   )
 }
