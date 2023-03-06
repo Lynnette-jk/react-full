@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
+import personsService from './services/persons';
 
 
 const Filter = ({ searchQuery, handleSearchQueryChange }) => {
@@ -45,6 +46,12 @@ const App = () => {
   const [newPhone, setNewPhone] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
 
+  useEffect(() => {
+    personsService.getAll().then(initialPersons => {
+      setPersons(initialPersons);
+    });
+  }, []);
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -66,12 +73,11 @@ const App = () => {
       important: Math.random() > 0.5,
     }
   
-    axios.post('http://localhost:3001/persons', newPerson)
-      .then(response => {
-        setPersons(persons.concat(response.data))
-        setNewName('')
-        setNewPhone('')
-      })
+    personsService.create(newPerson).then(returnedPerson => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName('');
+      setNewPhone('');
+    });
   }
   
 
