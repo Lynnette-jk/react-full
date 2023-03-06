@@ -1,24 +1,48 @@
 {
-    "persons":[
-      { 
-        "name": "Arto Hellas", 
-        "number": "040-123456",
-        "id": 1
-      },
-      { 
-        "name": "Ada Lovelace", 
-        "number": "39-44-5323523",
-        "id": 2
-      },
-      { 
-        "name": "Dan Abramov", 
-        "number": "12-43-234345",
-        "id": 3
-      },
-      { 
-        "name": "Mary Poppendieck", 
-        "number": "39-23-6423122",
-        "id": 4
-      }
-    ]
-  }
+  "persons": [
+    {
+      "name": "Arto Hellas",
+      "number": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    {
+      "name": "Dan Abramov",
+      "number": "12-43-234345",
+      "id": 3
+    },
+    {
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122",
+      "id": 4
+    },
+    {
+      "name": "Kane Kiboko",
+      "phone": "14-12-124587",
+      "important": true,
+      "id": 5
+    },
+    {
+      "name": "Bruno Fernandes",
+      "phone": "77-00-777777",
+      "important": true,
+      "id": 6
+    },
+    {
+      "name": "David Hulin",
+      "phone": "47-41-425653",
+      "important": true,
+      "id": 7
+    },
+    {
+      "name": "Kelly Rodgers",
+      "phone": "14-78968521",
+      "important": false,
+      "id": 8
+    }
+  ]
+}

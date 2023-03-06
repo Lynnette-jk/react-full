@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import axios from 'axios'
+
 
 const Filter = ({ searchQuery, handleSearchQueryChange }) => {
   return (
@@ -57,16 +59,21 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const existingPerson = persons.find(person => person.name === newName)
-    if (existingPerson) {
-      alert(`${newName} is already added to the phonebook!`)
-    } else {
-      const newPerson = { name: newName, phone: newPhone }
-      setPersons(persons.concat(newPerson))
-      setNewName('')
-      setNewPhone('')
+  
+    const newPerson = {
+      name: newName,
+      phone: newPhone,
+      important: Math.random() > 0.5,
     }
+  
+    axios.post('http://localhost:3001/persons', newPerson)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewPhone('')
+      })
   }
+  
 
   const filteredPersons = searchQuery
     ? persons.filter(person => person.name.toLowerCase().includes(searchQuery.toLowerCase()))
