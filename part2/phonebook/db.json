@@ -26,15 +26,9 @@
     },
     {
       "name": "Bruno Fernandes",
-      "phone": "77-00-777777",
+      "phone": "12-96-326598",
       "important": true,
       "id": 6
-    },
-    {
-      "name": "John Doe",
-      "phone": "10-12-36-958474",
-      "important": false,
-      "id": 9
     }
   ]
 }

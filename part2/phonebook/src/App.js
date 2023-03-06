@@ -29,7 +29,7 @@ const PersonForm = ({ newName, newPhone, handleNameChange, handlePhoneChange, ad
 
 
 
-const Persons = ({ persons, deletePerson }) => {
+const Persons = ({ persons, deletePerson}) => {
   return (
     <ul>
       {persons.map((person, i) => 
@@ -151,12 +151,13 @@ const App = () => {
     if (window.confirm(`Delete ${name}?`)) {
       removePerson(id);
       setPersons(persons.filter(person => person.id !== id));
-      setSuccessMessage(`${name} deleted from phonebook`);
+          setSuccessMessage(`${name} deleted from phonebook`);
           setTimeout(() => {
             setSuccessMessage(null);
           }, 5000);
-    }
-  };
+        
+      }
+    };
   
   
 
