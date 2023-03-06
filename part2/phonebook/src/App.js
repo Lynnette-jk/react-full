@@ -27,21 +27,21 @@ const PersonForm = ({ newName, newPhone, handleNameChange, handlePhoneChange, ad
   )
 }
 
-const Persons = ({ persons }) => {
+
+
+const Persons = ({ persons, deletePerson }) => {
   return (
     <ul>
-      {persons.map((person, i) => <li key={i}>{person.name} {person.phone}</li>)}
+      {persons.map((person, i) => 
+      <li key={i}>{person.name} {person.phone}
+      <button onClick={() => deletePerson(person.id, person.name)}>delete</button>
+      </li>)}
     </ul>
   )
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '040-1234567' },
-    { name: 'Ada Lovelace', phone: '39-44-5323523' },
-    { name: 'Dan Abramov', phone: '12-43-234345' },
-    { name: 'Mary Poppendieck', phone: '39-23-6423122' }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
@@ -72,13 +72,32 @@ const App = () => {
       phone: newPhone,
       important: Math.random() > 0.5,
     }
-  
-    personsService.create(newPerson).then(returnedPerson => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName('');
-      setNewPhone('');
-    });
+    personsService.create(newPerson)
+    .then(response => {
+      setPersons(persons.concat(response))
+      setNewName('')
+      setNewPhone('')
+    })
   }
+
+  const removePerson = id => {
+    axios
+      .delete(`http://localhost:3001/persons/${id}`)
+      .then(response => {
+        console.log("Person deleted from server!");
+      })
+      .catch(error => {
+        console.log("Error deleting person from server:", error);
+      });
+  };
+  
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      removePerson(id);
+      setPersons(persons.filter(person => person.id !== id));
+    }
+  };
+  
   
 
   const filteredPersons = searchQuery
@@ -92,7 +111,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm newName={newName} newPhone={newPhone} handleNameChange={handleNameChange} handlePhoneChange={handlePhoneChange} addPerson={addPerson} />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} deletePerson={deletePerson} />
     </div>
   )
 }
