@@ -5,7 +5,8 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(null);
-
+  const [weatherData, setWeatherData] = useState(null);
+  const [apiKey, setApiKey] = useState(process.env.REACT_APP_API_KEY);
 
   useEffect(() => {
     axios
@@ -14,13 +15,33 @@ function App() {
       .catch((error) => console.log(error));
   }, []);
 
+  useEffect(() => {
+    if (selectedCountry) {
+      const capital = selectedCountry.capital[0];
+      axios
+        .get(
+          `https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=${apiKey}&units=metric`
+        )
+        .then((response) => {
+          setWeatherData(response.data);
+          const iconCode = response.data.weather[0].icon;
+          const iconUrl = `http://openweathermap.org/img/w/${iconCode}.png`;
+          setSelectedCountry({ ...selectedCountry, weatherIconUrl: iconUrl });
+
+
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [selectedCountry, apiKey]);
+
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
     setSelectedCountry(null);
   };
-  
+
   const handleShowDetails = (country) => {
     setSelectedCountry(country);
+    setWeatherData(null);
   };
 
   const filteredCountries = countries.filter((country) =>
@@ -46,10 +67,22 @@ function App() {
               <li key={language}>{language}</li>
             ))}
           </ul>
-          <button onClick={() => setSelectedCountry(null)}>Back</button>
+          {weatherData ? (
+            <div>
+              <h3>Weather in {selectedCountry.capital[0]}</h3>
+              <p>Temperature: {weatherData.main.temp} °C</p>
+              <p>Weather: {weatherData.weather[0].description}</p>
+              {selectedCountry.weatherIconUrl && (
+                <img src={selectedCountry.weatherIconUrl} alt="Weather icon" />
+              )}
+              <button onClick={() => setSelectedCountry(null)}>Back</button>
+            </div>
+          ) : (
+            <p>Loading weather data...</p>
+          )}
         </div>
       ) : filteredCountries.length > 10 ? (
-        <p>Too many matches, please specify another filter</p>
+        <p>Too many matches, specify another filter</p>
       ) : filteredCountries.length === 1 ? (
         <div>
           <h2>{filteredCountries[0].name.common}</h2>
@@ -65,14 +98,19 @@ function App() {
               <li key={language}>{language}</li>
             ))}
           </ul>
+          <button onClick={() => handleShowDetails(filteredCountries[0])}>
+            Show weather for {filteredCountries[0].capital[0]}
+          </button>
         </div>
       ) : (
-        filteredCountries.map((country) => (
-          <div key={country.name.common}>
-            <h2>{country.name.common}</h2>
-            <button onClick={() => handleShowDetails(country)}>Show</button>
-          </div>
-        ))
+        <ul>
+          {filteredCountries.map((country) => (
+            <li key={country.cca2}>
+              {country.name.common}{" "}
+              <button onClick={() => handleShowDetails(country)}>show</button>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
